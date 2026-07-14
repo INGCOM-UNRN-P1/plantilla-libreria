@@ -1,0 +1,23 @@
+{
+  "name": "plantilla",
+  "version": "1.0.0",
+  "repository": "https://github.com/usuario/plantilla-libreria.git",
+  "build": {
+    "command": "make",
+    "clean_command": "make clean"
+  },
+  "exports": {
+    "headers": [
+      {
+        "source": "include/plantilla.h",
+        "destination": "include/plantilla.h"
+      }
+    ],
+    "binaries": [
+      {
+        "source": "build/libplantilla.a",
+        "destination": "lib/libplantilla.a"
+      }
+    ]
+  }
+}
