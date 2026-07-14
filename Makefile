@@ -7,7 +7,7 @@ LDFLAGS =
 SRC_DIR = src
 INC_DIR = include
 BUILD_DIR = build
-EXAMPLES_DIR = examples
+EXAMPLES_DIR = ejemplos
 TESTS_DIR = tests
 
 # Nombres de salidas

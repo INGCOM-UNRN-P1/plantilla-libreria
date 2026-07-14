@@ -64,7 +64,7 @@ case "$COMMAND" in
             "library.json"
             "library.spec"
             "README.md"
-            "examples/main.c"
+            "ejemplos/main.c"
         )
         
         # Agregar archivos renombrados si existen
