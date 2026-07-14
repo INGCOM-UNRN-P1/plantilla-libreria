@@ -11,7 +11,7 @@ EXAMPLES_DIR = examples
 TESTS_DIR = tests
 
 # Nombres de salidas
-LIB_NAME = plantilla
+LIB_NAME = matematica
 LIB_A = $(BUILD_DIR)/lib$(LIB_NAME).a
 EXAMPLE_BIN = $(BUILD_DIR)/example_main
 TEST_BIN = $(BUILD_DIR)/test_suite
@@ -41,7 +41,7 @@ $(EXAMPLE_BIN): $(EXAMPLES_DIR)/main.c $(LIB_A)
 	$(CC) $(CFLAGS) $< -o $@ -L$(BUILD_DIR) -l$(LIB_NAME)
 
 # Regla para compilar las pruebas enlazando la librería
-$(TEST_BIN): $(TESTS_DIR)/test_plantilla.c $(LIB_A)
+$(TEST_BIN): $(TESTS_DIR)/test_matematica.c $(LIB_A)
 	$(CC) $(CFLAGS) $< -o $@ -L$(BUILD_DIR) -l$(LIB_NAME)
 
 # Ejecutar las pruebas unitarias

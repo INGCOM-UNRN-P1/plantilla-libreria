@@ -1,12 +1,20 @@
 #!/bin/bash
 set -euo pipefail
 
+# Cargar especificación si existe para obtener LIB_NAME
+LIB_NAME="plantilla"
+if [ -f "library.spec" ]; then
+    # shellcheck source=/dev/null
+    source "library.spec"
+fi
+
 # Funciones de ayuda
 usage() {
     echo "Uso: $0 <comando> [argumentos]"
     echo "Comandos disponibles:"
     echo "  rename <nuevo_nombre>   Renombra la librería y actualiza los archivos del proyecto."
     echo "  add-module <modulo>     Crea un nuevo módulo (.c en src/ y .h en include/)."
+    echo "  add-test <nombre>       Agrega una nueva prueba unitaria."
     echo "  build                   Compila la librería, ejemplos y pruebas."
     echo "  test                    Ejecuta las pruebas unitarias."
     echo "  clean                   Limpia los archivos generados."
@@ -27,7 +35,12 @@ case "$COMMAND" in
             exit 1
         fi
         NEW_NAME="$1"
-        OLD_NAME="plantilla"
+        OLD_NAME="${LIB_NAME}"
+        
+        if [ "$OLD_NAME" = "$NEW_NAME" ]; then
+            echo "La librería ya tiene el nombre '$NEW_NAME'."
+            exit 0
+        fi
         
         echo "Renombrando librería de '${OLD_NAME}' a '${NEW_NAME}'..."
         
@@ -108,6 +121,57 @@ EOF
         echo "Módulo '${MODULE_NAME}' creado:"
         echo "  - $HEADER_FILE"
         echo "  - $SRC_FILE"
+        ;;
+        
+    add-test)
+        if [ "$#" -lt 1 ]; then
+            echo "Error: Se requiere el nombre de la prueba."
+            exit 1
+        fi
+        TEST_NAME="$1"
+        TEST_FILE="tests/test_${LIB_NAME}.c"
+        
+        if [ ! -f "$TEST_FILE" ]; then
+            echo "Error: No se encontró el archivo de pruebas '$TEST_FILE'."
+            exit 1
+        fi
+        
+        # Verificar si el test ya existe en el archivo
+        if grep -q "void test_${TEST_NAME}" "$TEST_FILE"; then
+            echo "Error: La prueba '${TEST_NAME}' ya existe."
+            exit 1
+        fi
+        
+        echo "Agregando prueba '${TEST_NAME}' a '${TEST_FILE}'..."
+        
+        # Insertar la función de prueba antes de int main
+        TEMP_FILE=$(mktemp)
+        awk -v name="${TEST_NAME}" '
+        /int main/ {
+            print "void test_" name "(void) {"
+            print "    // TODO: Implementar aserciones"
+            print "    assert(1 == 1);"
+            print "    printf(\"test_" name ": PASSED\\n\");"
+            print "}"
+            print ""
+        }
+        { print }
+        ' "$TEST_FILE" > "$TEMP_FILE"
+        mv "$TEMP_FILE" "$TEST_FILE"
+        
+        # Insertar la llamada a la función dentro de main(void)
+        TEMP_FILE=$(mktemp)
+        awk -v name="${TEST_NAME}" '
+        /Corriendo pruebas unitarias.../ {
+            print
+            print "    test_" name "();"
+            next
+        }
+        { print }
+        ' "$TEST_FILE" > "$TEMP_FILE"
+        mv "$TEMP_FILE" "$TEST_FILE"
+        
+        echo "Prueba '${TEST_NAME}' agregada correctamente."
         ;;
         
     build)

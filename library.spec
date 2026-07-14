@@ -1,14 +1,14 @@
 # Especificación de la librería para integración por shell script
 
-LIB_NAME="plantilla"
+LIB_NAME="matematica"
 LIB_VERSION="1.0.0"
 LIB_BUILD_CMD="make"
 LIB_CLEAN_CMD="make clean"
 
 # Archivos a exportar (formato: "origen:destino")
 LIB_HEADERS=(
-  "include/plantilla.h:include/plantilla.h"
+  "include/matematica.h:include/matematica.h"
 )
 LIB_BINARIES=(
-  "build/libplantilla.a:lib/libplantilla.a"
+  "build/libmatematica.a:lib/libmatematica.a"
 )

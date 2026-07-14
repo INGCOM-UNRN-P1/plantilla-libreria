@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "plantilla.h"
+#include "matematica.h"
 
 int main(void) {
     int a = 5;

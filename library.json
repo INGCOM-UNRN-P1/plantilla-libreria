@@ -1,7 +1,7 @@
 {
-  "name": "plantilla",
+  "name": "matematica",
   "version": "1.0.0",
-  "repository": "https://github.com/usuario/plantilla-libreria.git",
+  "repository": "https://github.com/usuario/matematica-libreria.git",
   "build": {
     "command": "make",
     "clean_command": "make clean"
@@ -9,14 +9,14 @@
   "exports": {
     "headers": [
       {
-        "source": "include/plantilla.h",
-        "destination": "include/plantilla.h"
+        "source": "include/matematica.h",
+        "destination": "include/matematica.h"
       }
     ],
     "binaries": [
       {
-        "source": "build/libplantilla.a",
-        "destination": "lib/libplantilla.a"
+        "source": "build/libmatematica.a",
+        "destination": "lib/libmatematica.a"
       }
     ]
   }

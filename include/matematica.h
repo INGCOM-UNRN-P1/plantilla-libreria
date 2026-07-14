@@ -1,5 +1,5 @@
-#ifndef PLANTILLA_H
-#define PLANTILLA_H
+#ifndef MATEMATICA_H
+#define MATEMATICA_H
 
 /**
  * @brief Suma dos enteros.
@@ -10,4 +10,4 @@
  */
 int sumar(int a, int b);
 
-#endif // PLANTILLA_H
+#endif // MATEMATICA_H
