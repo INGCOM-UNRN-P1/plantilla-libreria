@@ -47,3 +47,17 @@ El proyecto incluye un script de gestión local para administrar la librería de
 * **Probar**: `./manage.sh test`
 * **Limpiar**: `./manage.sh clean`
 
+## 🔗 Integración con Plantilla-TP
+
+Esta librería posee un esquema estructurado compatible con proyectos basados en **plantilla-TP**.
+
+Para agregar esta librería a tu TP:
+1. Asegurate de que la librería tenga el nombre que querés (renombrala usando `./manage.sh rename <nuevo_nombre>` si es necesario).
+2. Subí el código a tu repositorio de Git remoto.
+3. En el directorio raíz de tu TP, ejecutá:
+   ```bash
+   ./tp.sh add-lib <nombre_libreria> <url_git_libreria>
+   ```
+   *Nota: El gestor del TP detectará la especificación en `library.spec` (o `library.json`), conservará la estructura original (`include/` y `src/`) y compilará la biblioteca estática en `build/` de manera totalmente integrada.*
+
+
