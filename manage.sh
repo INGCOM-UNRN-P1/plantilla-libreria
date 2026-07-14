@@ -15,6 +15,7 @@ usage() {
     echo "  rename <nuevo_nombre>   Renombra la librería y actualiza los archivos del proyecto."
     echo "  add-module <modulo>     Crea un nuevo módulo (.c en src/ y .h en include/)."
     echo "  add-test <nombre>       Agrega una nueva prueba unitaria."
+    echo "  info                    Muestra la configuración actual de la librería."
     echo "  build                   Compila la librería, ejemplos y pruebas."
     echo "  test                    Ejecuta las pruebas unitarias."
     echo "  clean                   Limpia los archivos generados."
@@ -184,6 +185,30 @@ EOF
         make test
         ;;
         
+    info)
+        echo "=== Configuración de la Librería ==="
+        echo "Nombre:       ${LIB_NAME:-No definido}"
+        echo "Versión:      ${LIB_VERSION:-No definida}"
+        echo "Build CMD:    ${LIB_BUILD_CMD:-No definido}"
+        echo "Clean CMD:    ${LIB_CLEAN_CMD:-No definido}"
+        echo "Cabeceras exportadas:"
+        if [ -n "${LIB_HEADERS+x}" ] && [ ${#LIB_HEADERS[@]} -gt 0 ]; then
+            for h in "${LIB_HEADERS[@]}"; do
+                echo "  - $h"
+            done
+        else
+            echo "  Ninguna"
+        fi
+        echo "Binarios exportados:"
+        if [ -n "${LIB_BINARIES+x}" ] && [ ${#LIB_BINARIES[@]} -gt 0 ]; then
+            for b in "${LIB_BINARIES[@]}"; do
+                echo "  - $b"
+            done
+        else
+            echo "  Ninguno"
+        fi
+        ;;
+
     clean)
         echo "Limpiando compilación..."
         make clean
