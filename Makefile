@@ -40,15 +40,20 @@ $(LIB_A): $(LIB_OBJS)
 $(EXAMPLE_BIN): $(EXAMPLES_DIR)/main.c $(LIB_A)
 	$(CC) $(CFLAGS) $< -o $@ -L$(BUILD_DIR) -l$(LIB_NAME)
 
-# Regla para compilar las pruebas enlazando la librería
-$(TEST_BIN): $(TESTS_DIR)/test_matematica.c $(LIB_A)
+# Pruebas unitarias: un ejecutable por archivo tests/test_*.c
+TEST_SRCS = $(wildcard $(TESTS_DIR)/test_*.c)
+TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(BUILD_DIR)/%, $(TEST_SRCS))
+
+$(BUILD_DIR)/test_%: $(TESTS_DIR)/test_%.c $(LIB_A)
 	$(CC) $(CFLAGS) $< -o $@ -L$(BUILD_DIR) -l$(LIB_NAME)
 
 # Ejecutar las pruebas unitarias
 .PHONY: test
-test: $(TEST_BIN)
-	@echo "Ejecutando pruebas unitarias..."
-	@./$(TEST_BIN)
+test: $(TEST_BINS)
+	@set -e; for bin in $(TEST_BINS); do \
+		echo "Ejecutando $$bin..."; \
+		./$$bin; \
+	done
 
 # Ejecutar el programa de ejemplo
 .PHONY: run

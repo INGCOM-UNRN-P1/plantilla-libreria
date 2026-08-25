@@ -8,6 +8,7 @@ LIB_CLEAN_CMD="make clean"
 # Archivos a exportar (formato: "origen:destino")
 LIB_HEADERS=(
   "include/matematica.h:include/matematica.h"
+  "include/tda/contracts.h:include/tda/contracts.h"
 )
 LIB_BINARIES=(
   "build/libmatematica.a:lib/libmatematica.a"

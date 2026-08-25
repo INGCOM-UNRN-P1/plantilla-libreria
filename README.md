@@ -2,6 +2,34 @@
 
 Estructura de proyecto base para desarrollar, probar y ejecutar librerías en C.
 
+## 🧪 `tda/contracts.h` — Invariantes en runtime para TDAs
+
+Cabecera C99 pura (header-only) para validar contratos e invariantes de Tipos
+de Datos Abstractos durante las pruebas:
+
+```c
+#include <tda/contracts.h>
+
+Lista *lista_insertar(Lista *l, int valor) {
+    TDA_REQUIERE(l != NULL);              // precondición
+    TDA_INVARIANTE(l, lista_es_valida);   // invariante estructural (antes)
+    ...
+    TDA_GARANTIZA(l->tam > 0);            // postcondición
+    TDA_INVARIANTE(l, lista_es_valida);   // invariante (después)
+    return l;
+}
+```
+
+- Una violación imprime `archivo:línea`, la condición rota y aborta: el test falla con diagnóstico claro.
+- Con `-DNDEBUG` los contratos se compilan fuera (cero costo).
+- Helpers genéricos: `tda_siguiente(nodo, offset)` y `tda_tiene_ciclo(primero, offset_sig, max_nodos)` para detectar ciclos en listas sin conocer el tipo concreto.
+- El encapsulamiento se defiende en compilación: declará el struct completo sólo en el `.c` (tipo opaco en el `.h`).
+
+Pruebas: `make test` (incluye `tests/test_contracts.c`). Se compila estricto:
+`-std=c99 -Wall -Wextra -Werror -pedantic`.
+
+---
+
 ## Estructura del Proyecto
 
 * **`include/`**: Archivos de cabecera (`.h`) públicos de la librería.
