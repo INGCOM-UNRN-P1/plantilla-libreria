@@ -1,6 +1,7 @@
-/*
- * tda/contracts.h — Framework de invariantes en runtime para TDAs (C99).
- * ============================================================================
+/**
+ * @file contracts.h
+ * @brief Contratos de precondición, postcondición e invariante para TDAs, en runtime (C99).
+ *
  * c-tda-contracts: contratos de precondición/postcondición/invariante con
  * reporte pedagógico, y helpers genéricos para validar estructuras enlazadas
  * (detección de ciclos) sin conocer el layout más allá del offset del campo
@@ -40,6 +41,25 @@
  * ------------------------------------------------------------------------- */
 extern size_t tda_contratos_evaluados_;
 size_t tda_contratos_evaluados_;
+
+/**
+ * @def TDA_REQUIERE(cond)
+ * @brief Precondición: si `cond` es falsa, informa archivo y línea y aborta.
+ * @param cond Condición que tiene que valer al entrar a la primitiva.
+ */
+
+/**
+ * @def TDA_GARANTIZA(cond)
+ * @brief Postcondición: si `cond` es falsa, informa archivo y línea y aborta.
+ * @param cond Condición que la primitiva promete al salir.
+ */
+
+/**
+ * @def TDA_INVARIANTE(estructura, validador)
+ * @brief Invariante: si `validador(estructura)` da 0, informa archivo y línea y aborta.
+ * @param estructura La estructura del TDA a validar.
+ * @param validador Función que devuelve distinto de 0 si la estructura es válida.
+ */
 
 #ifdef NDEBUG
 /* Versión producción: sin evaluación, sin costo. */
@@ -92,7 +112,12 @@ size_t tda_contratos_evaluados_;
  * No requieren conocer el tipo: basta el offset del campo `siguiente`.
  * ------------------------------------------------------------------------- */
 
-/* Devuelve el nodo siguiente siguiendo el puntero ubicado en `offset_sig`. */
+/**
+ * @brief Devuelve el nodo siguiente siguiendo el puntero ubicado en `offset_sig`.
+ * @param nodo Nodo actual (puede ser NULL).
+ * @param offset_sig Desplazamiento del campo `siguiente` dentro del nodo (`offsetof`).
+ * @return El nodo siguiente, o NULL si `nodo` es NULL.
+ */
 static inline void *tda_siguiente(const void *nodo, size_t offset_sig)
 {
     if (nodo == NULL) {
@@ -103,12 +128,14 @@ static inline void *tda_siguiente(const void *nodo, size_t offset_sig)
     return sig;
 }
 
-/*
- * Recorre acotadamente la cadena empezando en `primero` y reporta si existe
- * un ciclo (un nodo revisitado). `max_nodos` acota el peor caso para no
- * colgar la batería de pruebas ante corrupción grave.
- *
- * Devuelve: 0 = sin ciclo, 1 = ciclo detectado.
+/**
+ * @brief Recorre acotadamente la cadena empezando en `primero` y reporta si existe
+ * un ciclo (un nodo revisitado).
+ * @param primero Primer nodo de la cadena (puede ser NULL).
+ * @param offset_sig Desplazamiento del campo `siguiente` dentro del nodo (`offsetof`).
+ * @param max_nodos Cota de nodos a recorrer, para no colgar la batería de pruebas
+ * ante corrupción grave.
+ * @return 0 si no hay ciclo, 1 si se detectó uno.
  */
 static inline int tda_tiene_ciclo(const void *primero, size_t offset_sig,
                                   size_t max_nodos)

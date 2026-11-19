@@ -1,3 +1,8 @@
+/**
+ * @file matematica.h
+ * @brief Operaciones aritméticas de ejemplo de la plantilla.
+ */
+
 #ifndef MATEMATICA_H
 #define MATEMATICA_H
 
