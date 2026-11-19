@@ -14,6 +14,9 @@ TESTS_DIR = tests
 LIB_NAME = matematica
 LIB_A = $(BUILD_DIR)/lib$(LIB_NAME).a
 EXAMPLE_BIN = $(BUILD_DIR)/example_main
+# Antes de `all`: make expande los prerrequisitos al leer la regla.
+TEST_SRCS = $(wildcard $(TESTS_DIR)/test_*.c)
+TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(BUILD_DIR)/%, $(TEST_SRCS))
 
 # Fuentes y Objetos de la librería
 LIB_SRCS = $(wildcard $(SRC_DIR)/*.c)
@@ -40,9 +43,6 @@ $(EXAMPLE_BIN): $(EXAMPLES_DIR)/main.c $(LIB_A)
 	$(CC) $(CFLAGS) $< -o $@ -L$(BUILD_DIR) -l$(LIB_NAME)
 
 # Pruebas unitarias: un ejecutable por archivo tests/test_*.c
-TEST_SRCS = $(wildcard $(TESTS_DIR)/test_*.c)
-TEST_BINS = $(patsubst $(TESTS_DIR)/%.c, $(BUILD_DIR)/%, $(TEST_SRCS))
-
 $(BUILD_DIR)/test_%: $(TESTS_DIR)/test_%.c $(LIB_A)
 	$(CC) $(CFLAGS) $< -o $@ -L$(BUILD_DIR) -l$(LIB_NAME)
 
