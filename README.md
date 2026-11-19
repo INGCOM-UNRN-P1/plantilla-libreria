@@ -159,4 +159,6 @@ Para agregar esta librería a tu TP:
    ```
    *Nota: El gestor del TP detectará la especificación en `library.spec` (o `library.json`), conservará la estructura original (`include/` y `src/`) y compilará la biblioteca estática en `build/` de manera totalmente integrada.*
 
+## Contacto
 
+Martín René Vilugrón - mrvilugron@unrn.edu.ar - Ingeniería en Computación UNRN Andina
