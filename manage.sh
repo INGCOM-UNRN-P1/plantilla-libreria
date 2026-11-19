@@ -19,6 +19,7 @@ usage() {
     echo "  build                   Compila la librería, ejemplos y pruebas."
     echo "  test                    Ejecuta las pruebas unitarias."
     echo "  clean                   Limpia los archivos generados."
+    echo "  readme                  Actualiza el README con la API de include/ (corbel)."
     exit 1
 }
 
@@ -212,6 +213,10 @@ EOF
     clean)
         echo "Limpiando compilación..."
         make clean
+        ;;
+
+    readme)
+        make readme
         ;;
         
     *)

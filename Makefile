@@ -60,6 +60,31 @@ run: $(EXAMPLE_BIN)
 	@echo "Ejecutando programa de ejemplo..."
 	@./$(EXAMPLE_BIN)
 
+# README: uso, cómo agregarla a un TP y la API de include/, generados por corbel
+# desde el código (sólo entre las marcas corbel:readme; lo demás no se toca).
+# Sin corbel avisa y sale con 0; con DOC_ESTRICTO=1 (la CI) sale con 1.
+CORBEL ?= corbel
+DOC_ESTRICTO ?= 0
+
+.PHONY: readme
+readme:
+	@if command -v $(CORBEL) >/dev/null 2>&1; then \
+		$(CORBEL) readme .; \
+	else \
+		echo "corbel no está instalado: no se generó el README (mother instalar --perfil analisis)."; \
+		test "$(DOC_ESTRICTO)" != 1; \
+	fi
+
+# Comprobar que el README está al día con el código, sin escribirlo
+.PHONY: readme-check
+readme-check:
+	@if command -v $(CORBEL) >/dev/null 2>&1; then \
+		$(CORBEL) readme . --check; \
+	else \
+		echo "corbel no está instalado: no se comprobó el README (mother instalar --perfil analisis)."; \
+		test "$(DOC_ESTRICTO)" != 1; \
+	fi
+
 # Limpiar archivos generados
 .PHONY: clean
 clean:

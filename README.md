@@ -43,27 +43,97 @@ Pruebas: `make test` (incluye `tests/test_contracts.c`). Se compila estricto:
 * GCC (o cualquier compilador compatible con C99)
 * GNU Make
 
+<!-- corbel:readme:inicio — generado por `corbel readme`: no editar a mano -->
+
+**Versión:** 1.1.0
+
 ## Uso
 
-Compilá todo el proyecto (librería estática, ejemplo y pruebas):
 ```bash
-make
+make         # compila la librería, el ejemplo y las pruebas
+make test    # corre las pruebas
+make run     # corre el programa de ejemplo
+make readme  # actualiza este README desde el código
+make clean   # borra lo compilado
 ```
 
-Ejecutá las pruebas unitarias:
+## Cómo agregarla a un TP
+
+Desde la raíz de un TP hecho con `plantilla-TP`:
+
 ```bash
-make test
+./tp.sh add-lib matematica https://github.com/usuario/matematica-libreria.git
 ```
 
-Ejecutá el programa de ejemplo:
-```bash
-make run
+## API
+
+### `include/matematica.h`
+
+Operaciones aritméticas de ejemplo de la plantilla.
+
+| Nombre | Qué hace |
+| :-- | :-- |
+| [`sumar`](#sumar) | Suma dos enteros. |
+
+#### `sumar`
+
+```c
+int sumar(int a, int b);
 ```
 
-Limpiá los archivos compilados:
-```bash
-make clean
+Suma dos enteros.
+
+| Parámetro | Descripción |
+| :-- | :-- |
+| `a` | Primer entero. |
+| `b` | Segundo entero. |
+
+**Devuelve:** La suma de a y b.
+
+### `include/tda/contracts.h`
+
+Contratos de precondición, postcondición e invariante para TDAs, en runtime (C99).
+
+| Nombre | Qué hace |
+| :-- | :-- |
+| [`tda_siguiente`](#tda_siguiente) | Devuelve el nodo siguiente siguiendo el puntero ubicado en `offset_sig`. |
+| [`tda_tiene_ciclo`](#tda_tiene_ciclo) | Recorre acotadamente la cadena empezando en `primero` y reporta si existe un ciclo (un nodo revisitado). |
+| `TDA_REQUIERE` | Precondición: si `cond` es falsa, informa archivo y línea y aborta. |
+| `TDA_GARANTIZA` | Postcondición: si `cond` es falsa, informa archivo y línea y aborta. |
+| `TDA_INVARIANTE` | Invariante: si `validador(estructura)` da 0, informa archivo y línea y aborta. |
+
+#### `tda_siguiente`
+
+```c
+static inline void *tda_siguiente(const void *nodo, size_t offset_sig);
 ```
+
+Devuelve el nodo siguiente siguiendo el puntero ubicado en `offset_sig`.
+
+| Parámetro | Descripción |
+| :-- | :-- |
+| `nodo` | Nodo actual (puede ser NULL). |
+| `offset_sig` | Desplazamiento del campo `siguiente` dentro del nodo (`offsetof`). |
+
+**Devuelve:** El nodo siguiente, o NULL si `nodo` es NULL.
+
+#### `tda_tiene_ciclo`
+
+```c
+static inline int tda_tiene_ciclo(const void *primero, size_t offset_sig, size_t max_nodos);
+```
+
+Recorre acotadamente la cadena empezando en `primero` y reporta si existe un ciclo (un nodo revisitado).
+
+| Parámetro | Descripción |
+| :-- | :-- |
+| `primero` | Primer nodo de la cadena (puede ser NULL). |
+| `offset_sig` | Desplazamiento del campo `siguiente` dentro del nodo (`offsetof`). |
+| `max_nodos` | Cota de nodos a recorrer, para no colgar la batería de pruebas ante corrupción grave. |
+
+**Devuelve:** 0 si no hay ciclo, 1 si se detectó uno.
+
+<!-- corbel:readme:fin -->
 
 ## Script de Gestión Local
 
@@ -74,6 +144,7 @@ El proyecto incluye un script de gestión local para administrar la librería de
 * **Compilar**: `./manage.sh build`
 * **Probar**: `./manage.sh test`
 * **Limpiar**: `./manage.sh clean`
+* **Actualizar el README**: `./manage.sh readme` (o `make readme`): regenera, con `corbel`, la parte de este archivo entre las marcas `corbel:readme` (uso, cómo agregarla a un TP y la API de `include/`) desde los docblocks. Lo demás se escribe a mano.
 
 ## 🔗 Integración con Plantilla-TP
 
