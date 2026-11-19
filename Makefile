@@ -14,7 +14,6 @@ TESTS_DIR = tests
 LIB_NAME = matematica
 LIB_A = $(BUILD_DIR)/lib$(LIB_NAME).a
 EXAMPLE_BIN = $(BUILD_DIR)/example_main
-TEST_BIN = $(BUILD_DIR)/test_suite
 
 # Fuentes y Objetos de la librería
 LIB_SRCS = $(wildcard $(SRC_DIR)/*.c)
@@ -22,7 +21,7 @@ LIB_OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(LIB_SRCS))
 
 # Regla por defecto: compila todo (librería, ejemplos y pruebas)
 .PHONY: all
-all: $(LIB_A) $(EXAMPLE_BIN) $(TEST_BIN)
+all: $(LIB_A) $(EXAMPLE_BIN) $(TEST_BINS)
 
 # Crear directorio de compilación
 $(BUILD_DIR):
